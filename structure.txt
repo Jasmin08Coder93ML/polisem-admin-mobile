@@ -1,69 +1,91 @@
-polisem-platform/
+Polisem-platform/
 │
-├── backend/                  # GO BACKEND (Clean Architecture)
+├── backend/                          # GO BACKEND (Clean Architecture)
 │   ├── cmd/
 │   │   └── api/
-│   │       └── main.go       # Programmanyň başlanyş nokady
+│   │       └── main.go               # Programmanyň başlanyş nokady
 │   ├── internal/
-│   │   ├── auth/             # Işgärler, dükan eýeleri we lisenziýa barlagy
-│   │   ├── shop/             # Dükan sazlamalary (Azyk, eşik, gurluşyk we ş.m. dynamic fields)
-│   │   │
-│   │   ├── products/         # Haryt dolandyryş moduly
-│   │   │   ├── delivery/     # API endpoints
-│   │   │   ├── repository/   # Maglumat gory (Elde goşmak we awto-ştrihkod generator)
-│   │   │   └── service/      # Biznes logika (Elde çalt girizmek we wizard algoritmlesi)
-│   │   │
-│   │   ├── sales/            # Bölek we lomaý satuw, çalt kassa (POS)
-│   │   ├── warehouse/        # Ammar galyndylary we ammarara haryt geçirmeleri
-│   │   │
-│   │   ├── reports/          # Hasabatlar we Nalog (Salgyt) ulgamy
-│   │   │   ├── internal/     # Kassa, peýda-zyýan we bergiler
-│   │   │   ├── external/     # Daşky statistika we bazar meýilleri
-│   │   │   ├── tax/          # Nalog hasabat formalary we şablonlary
-│   │   │   └── export/       # Excel generator we dynamic Chart-JSON dörediji
-│   │   │
-│   │   └── ai_copilot/       # Süni Intellekt (AI Core Engine)
-│   │       ├── voice/        # Sesi tekstde öwürmek we buýruk tanamak (Speech-to-Text)
-│   │       ├── text/         # Gemini API / LLM tekst analiz we akylly sorag-jogap
-│   │       └── video/        # Kamera arkaly haryt we faktura tanamak (Vision)
+│   │   ├── auth/                     # Işgärler, dükan eýeleri we lisenziýa barlagy
+│   │   │   ├── handler.go            # HTTP handlerlar
+│   │   │   ├── service.go            # Biznes logika
+│   │   │   ├── repository.go         # DB gatlagy
+│   │   │   └── models.go             # User/Auth strukturalary
+│   │   ├── shop/                     # Dükan sazlamalary
+│   │   │   ├── handler.go
+│   │   │   ├── service.go
+│   │   │   └── models.go             # Dynamic field struct
+│   │   ├── products/                 # Haryt dolandyryş moduly
+│   │   │   ├── delivery/
+│   │   │   │   └── handler.go
+│   │   │   ├── repository/
+│   │   │   │   └── repository.go     # Barcode generator implementasiýasy
+│   │   │   └── service/
+│   │   │       └── service.go        # Wizard algoritmlesi
+│   │   ├── sales/                    # Bölek we lomaý satuw
+│   │   │   ├── handler.go
+│   │   │   ├── service.go
+│   │   │   └── repository.go
+│   │   ├── warehouse/                # Ammar galyndylary
+│   │   │   ├── handler.go
+│   │   │   └── service.go
+│   │   ├── reports/                  # Hasabatlar we Nalog
+│   │   │   ├── internal/
+│   │   │   │   └── dashboard.go      # Kassa, peýda-zyýan
+│   │   │   ├── external/
+│   │   │   │   └── analytics.go      # Daşky statistika
+│   │   │   ├── tax/
+│   │   │   │   └── tax_calculator.go # Nalog formalary
+│   │   │   └── export/
+│   │   │       └── excel_engine.go   # Excel generator
+│   │   └── ai_copilot/               # Süni Intellekt (AI Core Engine)
+│   │       ├── voice/
+│   │       │   └── processor.go      # Speech-to-Text
+│   │       ├── text/
+│   │       │   └── gemini_client.go  # LLM analiz
+│   │       └── video/
+│   │           └── vision_engine.go  # Kamera/OCR analiz
 │   │
 │   ├── pkg/
-│   │   ├── database/         # PostgreSQL driver we birikme sazlamalary
-│   │   └── middleware/       # JWT we howpsuzlyk süzgüçleri
+│   │   ├── database/
+│   │   │   └── postgres.go           # DB baglanyşygy
+│   │   └── middleware/
+│   │       └── auth_middleware.go    # JWT barlagy
 │   ├── .env
 │   ├── go.mod
 │   └── go.sum
 │
-└── frontend/                 # FLUTTER FRONTEND (Feature-Driven UI)
+└── frontend/                         # FLUTTER FRONTEND (Feature-Driven UI)
     ├── assets/
     │   ├── icons/
     │   └── images/
     ├── lib/
-    │   ├── core/             # Global dizaýn we ulgam sazlamalary
-    │   │   ├── constants/    # Reňkler, ölçegler, talyplar
-    │   │   ├── network/      # API (Dio) süzgüçleri we internet birikmesi
-    │   │   └── theme/        # Temalar (Dükan görnüşine görä UI üýtgetmek)
+    │   ├── core/
+    │   │   ├── app_theme.dart        # Reňkler, temalar
+    │   │   ├── api_client.dart       # Dio konfigurasiýa
+    │   │   └── app_constants.dart    # Global parametrler
     │   │
-    │   ├── features/         # Ekranlar we Ulanyjy interfeýsi
-    │   │   ├── auth/         # Login we hasaba alyş
-    │   │   ├── shop_setup/   # Dükanyň ugruny saýlamak (Gurluşyk, Azyk, Eşik we ş.m.)
-    │   │   │
-    │   │   ├── product_management/ 
-    │   │   │   ├── manual_entry/ # ULANYJY ÜÇIN ELDE ÇALT HARYT GIRIZMEK UI (Wizard)
-    │   │   │   └── barcode_gen/  # Awto-ştrihkod dörediji ekran
-    │   │   │
-    │   │   ├── pos_cashier/  # Çalt bölek satuw ekrany
-    │   │   │
-    │   │   ├── reports_visual/ # GRAFIK WE SHEMA HASABATLARY
-    │   │   │   ├── charts/   # Line, Bar, Pie diagrammalar (FL Chart)
-    │   │   │   └── excel_view/# Sanawlar we Excel eksport düwmesi
-    │   │   │
-    │   │   ├── tax_panel/    # Nalog we döwlet hasabatlylyk paneli
-    │   │   │
-    │   │   └── ai_assistant/ # AI KÖMEKÇI INTERFEÝSI
-    │   │       ├── components/ # Ses ýazgysy we Chat pencereleri
-    │   │       └── camera_scan/# Kamera arkaly AI analiz ekrany
+    │   ├── features/
+    │   │   ├── auth/
+    │   │   │   ├── login_screen.dart
+    │   │   │   └── auth_provider.dart
+    │   │   ├── shop_setup/
+    │   │   │   └── shop_selection_screen.dart
+    │   │   ├── product_management/
+    │   │   │   ├── manual_entry_screen.dart
+    │   │   │   └── barcode_generator_widget.dart
+    │   │   ├── pos_cashier/
+    │   │   │   ├── pos_screen.dart
+    │   │   │   └── cart_controller.dart
+    │   │   ├── reports_visual/
+    │   │   │   ├── charts_view.dart
+    │   │   │   └── excel_exporter.dart
+    │   │   ├── tax_panel/
+    │   │   │   └── tax_report_screen.dart
+    │   │   └── ai_assistant/
+    │   │       ├── voice_recorder_widget.dart
+    │   │       ├── chat_window.dart
+    │   │       └── camera_scan_screen.dart
     │   │
-    │   └── main.dart         # Flutter programmanyň başlanýan nokady
+    │   └── main.dart                 # Flutter entry point
     ├── pubspec.yaml
     └── .env
