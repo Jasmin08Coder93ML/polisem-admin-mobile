@@ -1,91 +1,55 @@
-Polisem-platform/
-│
-├── backend/                          # GO BACKEND (Clean Architecture)
-│   ├── cmd/
-│   │   └── api/
-│   │       └── main.go               # Programmanyň başlanyş nokady
-│   ├── internal/
-│   │   ├── auth/                     # Işgärler, dükan eýeleri we lisenziýa barlagy
-│   │   │   ├── handler.go            # HTTP handlerlar
-│   │   │   ├── service.go            # Biznes logika
-│   │   │   ├── repository.go         # DB gatlagy
-│   │   │   └── models.go             # User/Auth strukturalary
-│   │   ├── shop/                     # Dükan sazlamalary
-│   │   │   ├── handler.go
-│   │   │   ├── service.go
-│   │   │   └── models.go             # Dynamic field struct
-│   │   ├── products/                 # Haryt dolandyryş moduly
-│   │   │   ├── delivery/
-│   │   │   │   └── handler.go
-│   │   │   ├── repository/
-│   │   │   │   └── repository.go     # Barcode generator implementasiýasy
-│   │   │   └── service/
-│   │   │       └── service.go        # Wizard algoritmlesi
-│   │   ├── sales/                    # Bölek we lomaý satuw
-│   │   │   ├── handler.go
-│   │   │   ├── service.go
-│   │   │   └── repository.go
-│   │   ├── warehouse/                # Ammar galyndylary
-│   │   │   ├── handler.go
-│   │   │   └── service.go
-│   │   ├── reports/                  # Hasabatlar we Nalog
-│   │   │   ├── internal/
-│   │   │   │   └── dashboard.go      # Kassa, peýda-zyýan
-│   │   │   ├── external/
-│   │   │   │   └── analytics.go      # Daşky statistika
-│   │   │   ├── tax/
-│   │   │   │   └── tax_calculator.go # Nalog formalary
-│   │   │   └── export/
-│   │   │       └── excel_engine.go   # Excel generator
-│   │   └── ai_copilot/               # Süni Intellekt (AI Core Engine)
-│   │       ├── voice/
-│   │       │   └── processor.go      # Speech-to-Text
-│   │       ├── text/
-│   │       │   └── gemini_client.go  # LLM analiz
-│   │       └── video/
-│   │           └── vision_engine.go  # Kamera/OCR analiz
-│   │
-│   ├── pkg/
-│   │   ├── database/
-│   │   │   └── postgres.go           # DB baglanyşygy
-│   │   └── middleware/
-│   │       └── auth_middleware.go    # JWT barlagy
-│   ├── .env
-│   ├── go.mod
-│   └── go.sum
-│
-└── frontend/                         # FLUTTER FRONTEND (Feature-Driven UI)
-    ├── assets/
-    │   ├── icons/
-    │   └── images/
-    ├── lib/
-    │   ├── core/
-    │   │   ├── app_theme.dart        # Reňkler, temalar
-    │   │   ├── api_client.dart       # Dio konfigurasiýa
-    │   │   └── app_constants.dart    # Global parametrler
-    │   │
-    │   ├── features/
-    │   │   ├── auth/
-    │   │   │   ├── login_screen.dart
-    │   │   │   └── auth_provider.dart
-    │   │   ├── shop_setup/
-    │   │   │   └── shop_selection_screen.dart
-    │   │   ├── product_management/
-    │   │   │   ├── manual_entry_screen.dart
-    │   │   │   └── barcode_generator_widget.dart
-    │   │   ├── pos_cashier/
-    │   │   │   ├── pos_screen.dart
-    │   │   │   └── cart_controller.dart
-    │   │   ├── reports_visual/
-    │   │   │   ├── charts_view.dart
-    │   │   │   └── excel_exporter.dart
-    │   │   ├── tax_panel/
-    │   │   │   └── tax_report_screen.dart
-    │   │   └── ai_assistant/
-    │   │       ├── voice_recorder_widget.dart
-    │   │       ├── chat_window.dart
-    │   │       └── camera_scan_screen.dart
-    │   │
-    │   └── main.dart                 # Flutter entry point
-    ├── pubspec.yaml
-    └── .env
+========================================================================
+POLISEM PLATFORM - PROJECT ARCHITECTURE OVERVIEW
+========================================================================
+
+1. BACKEND (Go Language / Clean Architecture)
+   ---------------------------------------------------------------------
+   cmd/
+     api/main.go          : Ulgamyň ýaýlym nokady (Entry point). Serveri işledýär.
+   
+   internal/              : Esasy biznes logika (Domain Driven Design).
+     auth/                : Işgärleriň we dükan eýeleriniň hasaby (JWT, Sessions).
+     shop/                : Dükan konfigurasiýalary (Dynamic Fields - azyk, gurluşyk).
+     products/            : Haryt dolandyryşy (Elde girizmek, Barcode generation).
+     sales/               : Bölek we lomaý satuw (POS - Point of Sale).
+     warehouse/           : Ammar logistikasy (Galyndylary, ammarara hereketler).
+     reports/             : Analitika moduly (Excel, Tax/Nalog hasabatlary).
+     ai_copilot/          : AI beýnisi (Gemini API, Vision OCR, Voice Processing).
+
+   pkg/                   : Global utilitler (GAÝTADAN ULANYLÝAN KOD).
+     database/            : PostgreSQL birikmeleri we model gurluşlary.
+     middleware/          : JWT we Howpsuzlyk süzgüçleri (Auth protection).
+
+   .env                   : Gizlinlikler (API keys, DB connection strings).
+   go.mod                 : Proýektiň kitaphanalary we wersiýalary (Dependency).
+
+------------------------------------------------------------------------
+
+2. FRONTEND (Flutter / Feature-Driven Architecture)
+   ---------------------------------------------------------------------
+   lib/
+     core/                : Global konfigurasiýalar.
+       app_theme.dart     : Reňkler, şriftler we global dizaýn (UI/UX).
+       api_client.dart    : Backend bilen habarlaşýan HTTP (Dio) klient.
+       app_constants.dart : Global sazlamalar we API adresleri.
+
+     features/            : Her funksional aýratyn papka (Clean Code).
+       auth/              : Login we hasaba alyş ekranlary.
+       shop_setup/        : Dükan görnüşini saýlamak (Dinamik UI).
+       product_management/: Haryt girizmek (Wizard algoritmi), Ştrihkod.
+       pos_cashier/       : Kassa apparaty interfeýsi (Çalt satuw).
+       reports_visual/    : Diagrammalar (FL Chart), Excel eksport düwmesi.
+       tax_panel/         : Nalog we döwlet hasabatlarynyň görnüşi.
+       ai_assistant/      : AI Chatbot, ses ýazgysy we kamera skanneri.
+
+     main.dart            : Flutter applikasiýanyň başlanýan nokady (Entry point).
+   
+   pubspec.yaml           : Flutter paketleri we assetler.
+   .env                   : Frontend konfigurasiýalary.
+
+========================================================================
+DESIGN PHILOSOPHY:
+- Backend: Clean Architecture (Modullaryň biri-birine baglylygy ýok).
+- Frontend: Feature-Driven (Her ekran özbaşdak, kodlar arassa).
+- AI Integration: Modular (Gelejekde başga AI modullary aňsat goşulýar).
+========================================================================
