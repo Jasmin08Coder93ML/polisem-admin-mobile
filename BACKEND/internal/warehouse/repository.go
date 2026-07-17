@@ -1,9 +1,12 @@
 package warehouse
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+)
 
 type Repository interface {
-	UpdateStock(itemID string, qty int) error
+	UpdateStock(ctx context.Context, itemID string, qty int) error
 }
 
 type warehouseRepo struct {
@@ -14,8 +17,8 @@ func NewRepository(db *sql.DB) Repository {
 	return &warehouseRepo{db: db}
 }
 
-func (r *warehouseRepo) UpdateStock(itemID string, qty int) error {
-	query := `UPDATE stock SET quantity = $1 WHERE id = $2`
-	_, err := r.db.Exec(query, qty, itemID)
+func (r *warehouseRepo) UpdateStock(ctx context.Context, itemID string, qty int) error {
+	query := `UPDATE stock SET quantity = $1, updated_at = NOW() WHERE id = $2`
+	_, err := r.db.ExecContext(ctx, query, qty, itemID)
 	return err
 }
