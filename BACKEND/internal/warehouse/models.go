@@ -2,7 +2,6 @@ package warehouse
 
 import "time"
 
-// StockItem представляет единицу товара на складе
 type StockItem struct {
 	ID        string    `json:"id"`
 	ProductID string    `json:"product_id"`
